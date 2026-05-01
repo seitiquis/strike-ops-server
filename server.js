@@ -18,6 +18,16 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("Player conectado:", socket.id);
 
+  socket.on("player_shoot", (data) => {
+  socket.to(data.room).emit("player_shoot", {
+    id: socket.id,
+    x: data.x,
+    y: data.y,
+    angle: data.angle,
+    weaponName: data.weaponName || "Pistol"
+    });
+    });
+
   // 🔥 CRIAR SALA
   socket.on("createRoom", (username) => {
     const roomId = Math.random().toString(36).substring(2, 7);
