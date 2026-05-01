@@ -25,6 +25,19 @@ io.on("connection", (socket) => {
     socket.emit("roomCreated", roomId);
     console.log("Sala criada:", roomId);
   });
+
+  socket.on("player_move", (data) => {
+    socket.to(data.room).emit("player_move", {
+      id: socket.id,
+      x: data.x,
+      y: data.y,
+      angle: data.angle
+    });
+  });
+
+  socket.on("disconnect", () => {
+    console.log("Player saiu:", socket.id);
+  });
 });
 
 const PORT = process.env.PORT || 3000;
