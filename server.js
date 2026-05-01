@@ -34,14 +34,15 @@ io.on("connection", (socket) => {
   });
 
   // 🔥 MOVIMENTO DOS PLAYERS
-  socket.on("player_move", (data) => {
-    socket.to(data.room).emit("player_move", {
-      id: socket.id,
-      x: data.x,
-      y: data.y,
-      angle: data.angle
-    });
+socket.on("player_move", (data) => {
+  socket.to(data.room).emit("player_move", {
+    id: socket.id,
+    x: data.x,
+    y: data.y,
+    angle: data.angle,
+    username: data.username || "Player"
   });
+});
 
   // 🔥 DESCONECTAR
   socket.on("disconnect", () => {
