@@ -18,6 +18,7 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("Player conectado:", socket.id);
 
+  // 🔥 CRIAR SALA
   socket.on("createRoom", (username) => {
     const roomId = Math.random().toString(36).substring(2, 7);
     socket.join(roomId);
@@ -26,6 +27,13 @@ io.on("connection", (socket) => {
     console.log("Sala criada:", roomId);
   });
 
+  // 🔥 ENTRAR NA SALA (CORRETO)
+  socket.on("joinRoom", (roomId) => {
+    socket.join(roomId);
+    console.log("Player entrou na sala:", roomId);
+  });
+
+  // 🔥 MOVIMENTO DOS PLAYERS
   socket.on("player_move", (data) => {
     socket.to(data.room).emit("player_move", {
       id: socket.id,
@@ -35,6 +43,7 @@ io.on("connection", (socket) => {
     });
   });
 
+  // 🔥 DESCONECTAR
   socket.on("disconnect", () => {
     console.log("Player saiu:", socket.id);
   });
@@ -44,8 +53,4 @@ const PORT = process.env.PORT || 3000;
 
 server.listen(PORT, () => {
   console.log("Servidor rodando na porta", PORT);
-});
-socket.on("joinRoom", (roomId) => {
-  socket.join(roomId);
-  console.log("Player entrou na sala:", roomId);
 });
