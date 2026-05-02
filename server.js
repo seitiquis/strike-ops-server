@@ -18,6 +18,11 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("Player conectado:", socket.id);
 
+  socket.on("zombies_sync", (data) => {
+  socket.to(data.room).emit("zombies_sync", {
+    zombies: data.zombies
+  });
+  });
   socket.on("zombie_hit", (data) => {
   socket.to(data.room).emit("zombie_hit", {
     zombieIndex: data.zombieIndex,
