@@ -24,7 +24,11 @@ io.on("connection", (socket) => {
     damage: data.damage
   });
   });
-   
+
+  socket.on("zombie_spawn", (data) => {
+  socket.to(data.room).emit("zombie_spawn", data.zombie);
+   });
+  
   socket.on("player_shoot", (data) => {
   socket.to(data.room).emit("player_shoot", {
     id: socket.id,
