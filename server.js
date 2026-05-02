@@ -34,9 +34,10 @@ function startMatch(room) {
 
   state.started = true;
 
-  io.to(room).emit("match_start", {
-    room
-  });
+io.to(room).emit("match_start", {
+  room,
+  hostId: state.hostId
+});
 
   console.log("Partida iniciada:", room);
 }
@@ -72,14 +73,15 @@ io.on("connection", (socket) => {
     socket.data.room = room;
     socket.data.username = data.username || "Player";
 
-    if (!waitingRooms[room]) {
-      waitingRooms[room] = {
-        players: [],
-        countdown: 0,
-        timer: null,
-        started: false
-      };
-    }
+ if (!waitingRooms[room]) {
+  waitingRooms[room] = {
+    players: [],
+    hostId: socket.id,
+    countdown: 0,
+    timer: null,
+    started: false
+  };
+}
 
     const state = waitingRooms[room];
 
